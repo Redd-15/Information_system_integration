@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for
 from zeep import Client
 
 app = Flask(__name__)
-WSDL_URL = 'http://componentb:8000/?wsdl'
+WSDL_URL = 'http://localhost:8000/?wsdl'
 
 @app.route('/', methods=['GET', 'POST'])
 def index():

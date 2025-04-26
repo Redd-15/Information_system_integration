@@ -7,7 +7,7 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - ./componentB/persons.db:/app/persons.db
+      - ./componentB:/app
 
   componenta:
     build:
