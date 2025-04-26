@@ -1,0 +1,19 @@
+version: '3.8'
+services:
+  componentb:
+    build:
+      context: ./componentB
+    container_name: componentb
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./componentB/persons.db:/app/persons.db
+
+  componenta:
+    build:
+      context: ./componentA
+    container_name: componenta
+    ports:
+      - "5000:5000"
+    depends_on:
+      - componentb

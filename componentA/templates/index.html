@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Person Manager</title>
+</head>
+<body>
+  <h1>All Persons</h1>
+  <ul>
+    {% for p in persons %}
+      <li>{{ p.id }}: {{ p.name }} (DOB: {{ p.dob }})</li>
+    {% endfor %}
+  </ul>
+
+  <h2>Add a New Person</h2>
+  <form method="post">
+    <label>Name:
+      <input type="text" name="name" required>
+    </label><br><br>
+    <label>Date of Birth:
+      <input type="date" name="dob" required>
+    </label><br><br>
+    <button type="submit">Add Person</button>
+  </form>
+</body>
+</html>
