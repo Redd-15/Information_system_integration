@@ -8,6 +8,8 @@ from sqlalchemy.orm import sessionmaker
 
 import datetime
 
+from wsgiref.simple_server import make_server
+
 # --- SQLAlchemy model setup ---
 Base = declarative_base()
 
@@ -50,8 +52,18 @@ soap_app = Application(
 )
 wsgi_app = WsgiApplication(soap_app)
 
+def initialize_database():
+    """Ensure the database has at least one record."""
+    session = Session()
+    if session.query(Person).count() == 0:
+        default_person = Person(name="John Doe", dob=datetime.date(1990, 1, 1))
+        session.add(default_person)
+        session.commit()
+    session.close()
+
+
 if __name__ == '__main__':
-    from wsgiref.simple_server import make_server
+    initialize_database()  # Initialize the database with default data
     print("🔉 SOAP server listening on 0.0.0.0:8000")
     server = make_server('0.0.0.0', 8000, wsgi_app)
     server.serve_forever()
