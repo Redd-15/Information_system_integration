@@ -17,7 +17,7 @@ class Person(Base):
     name = Column(String(100), nullable=False)
     dob  = Column(Date, nullable=False)
 
-engine = create_engine('sqlite:///persons.db')
+engine = create_engine('sqlite:///database/persons.db')
 Base.metadata.create_all(engine)
 Session = sessionmaker(bind=engine)
 
