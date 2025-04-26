@@ -15,9 +15,13 @@ def index():
 
     raw = client.service.get_persons()
     persons = []
-    for entry in raw:
-        _id, nm, db = entry.split('|')
-        persons.append(dict(id=_id, name=nm, dob=db))
+    
+    if not raw[0] == 'No records found':
+        for entry in raw:
+            _id, nm, db = entry.split('|')
+            persons.append(dict(id=_id, name=nm, dob=db))
+    else:
+        persons.append(dict(id=0, name='No records found', dob=''))
 
     return render_template('index.html', persons=persons)
 

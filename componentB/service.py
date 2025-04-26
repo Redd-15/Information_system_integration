@@ -39,8 +39,12 @@ class PersonService(ServiceBase):
     @rpc(_returns=Iterable(Unicode))
     def get_persons(ctx):
         session = Session()
-        for p in session.query(Person).order_by(Person.id).all():
-            yield f"{p.id}|{p.name}|{p.dob}"
+        persons = session.query(Person).order_by(Person.id).all()
+        if not persons:
+            yield "No records found"  # Return a message if no records exist
+        else:
+            for p in persons:
+                yield f"{p.id}|{p.name}|{p.dob}"
         session.close()
 
 # --- WSGI application ---
@@ -52,18 +56,8 @@ soap_app = Application(
 )
 wsgi_app = WsgiApplication(soap_app)
 
-def initialize_database():
-    """Ensure the database has at least one record."""
-    session = Session()
-    if session.query(Person).count() == 0:
-        default_person = Person(name="John Doe", dob=datetime.date(1990, 1, 1))
-        session.add(default_person)
-        session.commit()
-    session.close()
-
 
 if __name__ == '__main__':
-    initialize_database()  # Initialize the database with default data
     print("🔉 SOAP server listening on 0.0.0.0:8000")
     server = make_server('0.0.0.0', 8000, wsgi_app)
     server.serve_forever()
